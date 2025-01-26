@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="/home/milpet/fpcupdeluxe/fpc/bin/x86_64-linux/fpc.sh" Date="1734277711"/>
+  <Params Value=" -MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fi/home/milpet/Plocha/semestralka/lib/x86_64-linux -Fu/home/milpet/fpcupdeluxe/lazarus/lcl/units/x86_64-linux/gtk2 -Fu/home/milpet/fpcupdeluxe/lazarus/lcl/units/x86_64-linux -Fu/home/milpet/fpcupdeluxe/lazarus/components/freetype/lib/x86_64-linux -Fu/home/milpet/fpcupdeluxe/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/milpet/fpcupdeluxe/lazarus/packager/units/x86_64-linux -Fu/home/milpet/Plocha/semestralka/ -FU/home/milpet/Plocha/semestralka/lib/x86_64-linux/ -FE/home/milpet/Plocha/semestralka/ -o/home/milpet/Plocha/semestralka/ipv4_kalkulacka -dLCL -dLCLgtk2 ipv4_kalkulacka.lpr"/>
+  <Complete Value="False"/>
+</CONFIG>
