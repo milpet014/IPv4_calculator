@@ -7,7 +7,6 @@
       <Unit>
         <Filename Value="ipv4_kalkulacka.lpr"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <CursorPos Y="24"/>
         <UsageCount Value="26"/>
@@ -20,7 +19,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
-        <TopLine Value="64"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="170"/>
         <CursorPos X="56" Y="82"/>
         <UsageCount Value="26"/>
         <Loaded Value="True"/>
