@@ -1,12 +1,12 @@
 object Form1: TForm1
-  Left = 655
-  Height = 361
-  Top = 246
-  Width = 392
+  Left = 2482
+  Height = 359
+  Top = 462
+  Width = 393
   BorderStyle = bsSingle
   Caption = 'IPv4 Kalkulačka'
-  ClientHeight = 361
-  ClientWidth = 392
+  ClientHeight = 359
+  ClientWidth = 393
   Icon.Data = {
     AF8F00000000010001000000000001002000998F00001600000089504E470D0A
     1A0A0000000D49484452000002600000026008060000002D6BDFD000008F6049
@@ -1305,6 +1305,18 @@ object Form1: TForm1
         Text = '255.255.255.0'
       end
     end
+    object Test: TTabSheet
+      Caption = 'Test IPv4 adresácie'
+      ClientHeight = 329
+      ClientWidth = 384
+      object wip4: TLabel
+        Left = 136
+        Height = 38
+        Top = 24
+        Width = 106
+        Caption = '             W I P !'#10#10'Work In Progress'
+      end
+    end
     object FLSM: TTabSheet
       Caption = 'FLSM'
       ClientHeight = 329
@@ -1331,11 +1343,20 @@ object Form1: TForm1
       end
     end
   end
+  object wip3: TLabel
+    Left = 136
+    Height = 38
+    Top = 24
+    Width = 106
+    Caption = '             W I P !'#10#10'Work In Progress'
+    OnClick = wip1Click
+  end
   object MainMenu1: TMainMenu
     Left = 24
     Top = 48
     object Display: TMenuItem
       Caption = 'Zobrazenie'
+      OnClick = DisplayClick
       object Mode: TMenuItem
         Caption = 'Režim'
         object Light: TMenuItem
@@ -1347,6 +1368,16 @@ object Form1: TForm1
           OnClick = DarkClick
         end
       end
+      object MenuItem1: TMenuItem
+        Caption = 'Jazyk'
+        OnClick = MenuItem1Click
+        object MenuItem2: TMenuItem
+          Caption = 'SK'
+        end
+        object MenuItem3: TMenuItem
+          Caption = 'EN'
+        end
+      end
     end
     object About: TMenuItem
       Caption = 'O programe'
@@ -1356,6 +1387,7 @@ object Form1: TForm1
       end
       object Help: TMenuItem
         Caption = 'Pomoc'
+        OnClick = HelpClick
       end
     end
   end
