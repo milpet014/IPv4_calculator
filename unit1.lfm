@@ -1161,14 +1161,13 @@ object Form1: TForm1
   }
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '3.4.0.0'
   object PageControl: TPageControl
-    Left = 0
+    Left = -1
     Height = 360
     Top = 0
     Width = 394
-    ActivePage = IPv4
-    TabIndex = 0
+    ActivePage = Test
+    TabIndex = 1
     TabOrder = 0
     OnChange = PageControlChange
     object IPv4: TTabSheet
@@ -1316,6 +1315,7 @@ object Form1: TForm1
         Top = 24
         Width = 106
         Caption = '             W I P !'#10#10'Work In Progress'
+        OnClick = wip4Click
       end
     end
     object FLSM: TTabSheet
@@ -1354,7 +1354,7 @@ object Form1: TForm1
   end
   object MainMenu1: TMainMenu
     Left = 24
-    Top = 48
+    Top = 40
     object Display: TMenuItem
       Caption = 'Zobrazenie'
       OnClick = DisplayClick

@@ -71,6 +71,7 @@ type
     procedure FAClick(Sender: TObject);
     procedure BRClick(Sender: TObject);
     procedure NMClick(Sender: TObject);
+    procedure wip4Click(Sender: TObject);
   private
 
   public
@@ -349,6 +350,11 @@ begin
 end;
 
 procedure TForm1.NMClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.wip4Click(Sender: TObject);
 begin
 
 end;

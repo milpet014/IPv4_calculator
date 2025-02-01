@@ -80,6 +80,7 @@ type
 var
   Form1: TForm1;
   input:string;
+  SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
 
   correctInput,onlyOneError:boolean;
   i,j:byte;
@@ -104,7 +105,6 @@ end;
 
 procedure calcIPv4(inputFunction:string);
 var
-  SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
   inputAddress,inputPrefix:TStringArray;
   prefix:integer;
   maskArray:array[0..3] of byte;
@@ -200,20 +200,27 @@ begin
         SNetworkMask := IntToStr(maskArray[0]) + '.' + IntToStr(maskArray[1]) + '.' + IntToStr(maskArray[2]) + '.' + IntToStr(maskArray[3]);
       end;
 
-      NET_Out.Text := SnetAddress;
+      (*NET_Out.Text := SnetAddress;
       FA_Out.Text := SfirstAddress;
       LA_Out.Text := SlastAddress;
       BR_Out.Text := SbroadcastAddress;
       NM_Out.Text := SNetworkMask;
+      *)
     end
 
     else
     begin
-      NET_Out.Text := '';
+      (*NET_Out.Text := '';
       FA_Out.Text := '';
       LA_Out.Text := '';
       BR_Out.Text := '';
-      NM_Out.Text := '';
+      NM_Out.Text := ''; *)
+
+      SnetAddress := '';
+      SfirstAddress := '';
+      SlastAddress := '';
+      SbroadcastAddress := '';
+      SNetworkMask := '';
     end;
   end
   else inputError('Nesprávny vstup', 'Zlý vstup', $2030);
@@ -222,6 +229,12 @@ end;
 procedure TForm1.calc1Click(Sender: TObject);
 begin
   calcIPv4(input1.Text);
+
+  NET_Out.Text := SnetAddress;
+  FA_Out.Text := SfirstAddress;
+  LA_Out.Text := SlastAddress;
+  BR_Out.Text := SbroadcastAddress;
+  NM_Out.Text := SNetworkMask;
 end;
 
 
