@@ -79,16 +79,8 @@ type
 
 var
   Form1: TForm1;
-  input,SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
-  inputAddress,inputPrefix:TStringArray;
-  prefix,octet:integer;
-  maskArray:array[0..3] of byte;
-  addressArray:array[0..3] of integer;
-  prefixArray:array[1..32] of byte;
-  netAddress:array[0..3] of byte;
-  firstAddress:array[0..3] of byte;
-  lastAddress:array[0..3] of byte;
-  broadcastAddress:array[0..3] of byte;
+  input:string;
+
   correctInput,onlyOneError:boolean;
   i,j:byte;
 
@@ -111,6 +103,17 @@ begin
 end;
 
 procedure TForm1.calc1Click(Sender: TObject);
+var
+  SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
+  inputAddress,inputPrefix:TStringArray;
+  prefix,octet:integer;
+  maskArray:array[0..3] of byte;
+  addressArray:array[0..3] of integer;
+  prefixArray:array[1..32] of byte;
+  netAddress:array[0..3] of byte;
+  firstAddress:array[0..3] of byte;
+  lastAddress:array[0..3] of byte;
+  broadcastAddress:array[0..3] of byte;
 begin
   onlyOneError := true;
   correctInput := true;
@@ -121,7 +124,7 @@ begin
     inputPrefix := input.Split('/');
     Try
       if Length(inputPrefix) <> 2 then inputError('Nesprávny vstup', 'Zlý vstup', $2030);
-      if not TryStrToInt(inputPrefix[1], prefix) then inputError('Nesprávny prefix', 'Chyba', $2030);
+      if not TryStrToInt(inputPrefix[1], prefix) then inputError('Nesprávny formát prefixu', 'Chyba', $2030);
       if ((prefix > 32) OR (prefix < 0)) then inputError('Prefix je mimo rozsahu. Prefix je číslo od 0 po 32.', 'Zlý vstup', $2030);
     except
       On E: Exception do inputError('Nastala neočakávana chyba, skúste opakovať akciu.', 'Chyba', $2010);
@@ -139,10 +142,7 @@ begin
           for i := 0 to 3 do
           begin
             if not TryStrToInt(inputAddress[i], addressArray[i]) then inputError('Nesprávny formát adresy', 'Zlý vstup', $2030);
-            for j := 0 to 3 do
-            begin
-              if ((addressArray[j] > 255) OR (addressArray[j] < 0)) then inputError('Adresa je mimo rozsahu. IPv4 adresa sa skladá zo štyroch oktetov, každý z nich má osem bitov, čiže každý oktet musí byť v intervale od 0 po 255.', 'Zlý vstup', $2030);
-            end;
+            if ((addressArray[i] > 255) OR (addressArray[i] < 0)) then inputError('Adresa je mimo rozsahu. IPv4 adresa sa skladá zo štyroch oktetov, každý z nich má osem bitov, čiže každý oktet musí byť v intervale od 0 po 255.', 'Zlý vstup', $2030);
           end;
         end;
 
