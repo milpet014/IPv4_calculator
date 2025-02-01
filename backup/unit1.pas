@@ -102,11 +102,11 @@ begin
   end;
 end;
 
-procedure TForm1.calc1Click(Sender: TObject);
+procedure calcIPv4(inputFunction:string);
 var
   SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
   inputAddress,inputPrefix:TStringArray;
-  prefix,octet:integer;
+  prefix:integer;
   maskArray:array[0..3] of byte;
   addressArray:array[0..3] of integer;
   prefixArray:array[1..32] of byte;
@@ -117,7 +117,7 @@ var
 begin
   onlyOneError := true;
   correctInput := true;
-  input := input1.Text;
+  input := inputFunction;
 
   if(input <> '')then
   begin
@@ -217,6 +217,11 @@ begin
     end;
   end
   else inputError('Nesprávny vstup', 'Zlý vstup', $2030);
+end;
+
+procedure TForm1.calc1Click(Sender: TObject);
+begin
+  calcIPv4(input1.Text);
 end;
 
 
