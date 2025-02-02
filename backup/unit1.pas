@@ -6,22 +6,40 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, Menus, StdCtrls,
-  ExtCtrls, ActnList, ComCtrls, math, Types, LCLIntf;
+  ExtCtrls, ActnList, ComCtrls, math, Types, LCLIntf, Buttons, AnchorDockPanel;
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+    AnchorDockPanel1: TAnchorDockPanel;
+    AnchorDockPanel2: TAnchorDockPanel;
+    AnchorDockPanel3: TAnchorDockPanel;
+    AnchorDockPanel4: TAnchorDockPanel;
+    Reset_button_test: TBitBtn;
+    calc1: TBitBtn;
+    Check_button_test: TBitBtn;
     BR: TStaticText;
     BR_Out: TEdit;
-    calc1: TButton;
-    wip4: TLabel;
+    LA_input_test: TEdit;
+    BR_input_test: TEdit;
+    NET_input_test: TEdit;
+    FA_input_test: TEdit;
+    NM_input_test: TEdit;
+    instructions0_test: TLabel;
+    instructions1_test: TLabel;
+    assignment_address_test: TLabel;
+    BR_test: TLabel;
+    LA_test: TLabel;
+    NET_test: TLabel;
+    FA_test: TLabel;
+    NM_test: TLabel;
     MenuItem1: TMenuItem;
     MenuItem2: TMenuItem;
     MenuItem3: TMenuItem;
     NM_Out: TEdit;
-    ERROR1: TLabel;
+    instructions0: TLabel;
     FA: TStaticText;
     FA_Out: TEdit;
     input1: TEdit;
@@ -36,8 +54,6 @@ type
     Test: TTabSheet;
     Version: TMenuItem;
     Help: TMenuItem;
-    wip1: TLabel;
-    wip2: TLabel;
     LA_Out: TEdit;
     NET: TStaticText;
     NET_Out: TEdit;
@@ -45,16 +61,16 @@ type
     IPv4: TTabSheet;
     FLSM: TTabSheet;
     VLSM: TTabSheet;
-    wip3: TLabel;
     procedure calc1Click(Sender: TObject);
     procedure DarkClick(Sender: TObject);
     procedure DisplayClick(Sender: TObject);
     procedure FA_OutChange(Sender: TObject);
-    procedure ERROR1Click(Sender: TObject);
+    procedure instructions0Click(Sender: TObject);
     procedure GroupBox1Click(Sender: TObject);
     procedure HelpClick(Sender: TObject);
     procedure IPv4ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure NM_testClick(Sender: TObject);
     procedure PageControlChange(Sender: TObject);
     procedure LightClick(Sender: TObject);
     procedure VersionClick(Sender: TObject);
@@ -71,6 +87,7 @@ type
     procedure FAClick(Sender: TObject);
     procedure BRClick(Sender: TObject);
     procedure NMClick(Sender: TObject);
+    procedure instructions0_testClick(Sender: TObject);
   private
 
   public
@@ -221,6 +238,8 @@ begin
       SlastAddress := '';
       SbroadcastAddress := '';
       SNetworkMask := '';
+
+
     end;
   end
   else inputError('Nesprávny vstup', 'Zlý vstup', $2030);
@@ -258,7 +277,7 @@ begin
 
 end;
 
-procedure TForm1.ERROR1Click(Sender: TObject);
+procedure TForm1.instructions0Click(Sender: TObject);
 begin
 
 end;
@@ -270,6 +289,11 @@ end;
 
 procedure TForm1.IPv4ContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
+begin
+
+end;
+
+procedure TForm1.NM_testClick(Sender: TObject);
 begin
 
 end;
@@ -349,6 +373,11 @@ begin
 end;
 
 procedure TForm1.NMClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.instructions0_testClick(Sender: TObject);
 begin
 
 end;
