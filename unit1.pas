@@ -17,6 +17,18 @@ type
     AnchorDockPanel2: TAnchorDockPanel;
     AnchorDockPanel3: TAnchorDockPanel;
     AnchorDockPanel4: TAnchorDockPanel;
+    disableReset_button_test: TBitBtn;
+    Image1: TImage;
+    start_button_test: TBitBtn;
+    next_button_test: TBitBtn;
+    TestFromAll_out_test: TStaticText;
+    testFromAll_text_test: TStaticText;
+    tests_input_test: TEdit;
+    help_button_test: TBitBtn;
+    help_text_test: TLabel;
+    Score_text_test: TLabel;
+    tests_text_test: TLabel;
+    score_out_test: TLabel;
     Reset_button_test: TBitBtn;
     calc1: TBitBtn;
     Check_button_test: TBitBtn;
@@ -35,9 +47,9 @@ type
     NET_test: TLabel;
     FA_test: TLabel;
     NM_test: TLabel;
-    MenuItem1: TMenuItem;
-    MenuItem2: TMenuItem;
-    MenuItem3: TMenuItem;
+    Language: TMenuItem;
+    Slovak: TMenuItem;
+    English: TMenuItem;
     NM_Out: TEdit;
     instructions0: TLabel;
     FA: TStaticText;
@@ -62,17 +74,28 @@ type
     FLSM: TTabSheet;
     VLSM: TTabSheet;
     procedure calc1Click(Sender: TObject);
+    procedure Check_button_testClick(Sender: TObject);
     procedure DarkClick(Sender: TObject);
+    procedure disableReset_button_testClick(Sender: TObject);
     procedure DisplayClick(Sender: TObject);
+    procedure EnglishClick(Sender: TObject);
     procedure FA_OutChange(Sender: TObject);
+    procedure help_button_testClick(Sender: TObject);
     procedure instructions0Click(Sender: TObject);
     procedure GroupBox1Click(Sender: TObject);
     procedure HelpClick(Sender: TObject);
     procedure IPv4ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure next_button_testClick(Sender: TObject);
+    procedure Reset_button_testClick(Sender: TObject);
+    procedure Score_text_testClick(Sender: TObject);
+    procedure SlovakClick(Sender: TObject);
     procedure NM_testClick(Sender: TObject);
     procedure PageControlChange(Sender: TObject);
     procedure LightClick(Sender: TObject);
+    procedure start_button_testClick(Sender: TObject);
+    procedure TestFromAll_out_testClick(Sender: TObject);
+    procedure tests_input_testChange(Sender: TObject);
     procedure VersionClick(Sender: TObject);
     procedure wip1Click(Sender: TObject);
     procedure LA_OutChange(Sender: TObject);
@@ -81,7 +104,7 @@ type
     procedure LAClick(Sender: TObject);
     procedure NETClick(Sender: TObject);
     procedure Memo1Change(Sender: TObject);
-    procedure MenuItem1Click(Sender: TObject);
+    procedure LanguageClick(Sender: TObject);
     procedure MenuItem3Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure FAClick(Sender: TObject);
@@ -98,8 +121,8 @@ var
   Form1: TForm1;
   input:string;
   SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
-
-  correctInput,onlyOneError:boolean;
+  assignments,actualAssignemnt,correctAssignments, points, totalPoints:integer;
+  correctInput,onlyOneError,started,thisIsCorrect,checkedByButton,checked, disabledReset:boolean;
   i,j:byte;
 
 
@@ -216,30 +239,15 @@ begin
         SbroadcastAddress := IntToStr(broadcastAddress[0]) + '.' + IntToStr(broadcastAddress[1]) + '.' + IntToStr(broadcastAddress[2]) + '.' + IntToStr(broadcastAddress[3]);
         SNetworkMask := IntToStr(maskArray[0]) + '.' + IntToStr(maskArray[1]) + '.' + IntToStr(maskArray[2]) + '.' + IntToStr(maskArray[3]);
       end;
-
-      (*NET_Out.Text := SnetAddress;
-      FA_Out.Text := SfirstAddress;
-      LA_Out.Text := SlastAddress;
-      BR_Out.Text := SbroadcastAddress;
-      NM_Out.Text := SNetworkMask;
-      *)
     end
 
     else
     begin
-      (*NET_Out.Text := '';
-      FA_Out.Text := '';
-      LA_Out.Text := '';
-      BR_Out.Text := '';
-      NM_Out.Text := ''; *)
-
       SnetAddress := '';
       SfirstAddress := '';
       SlastAddress := '';
       SbroadcastAddress := '';
       SNetworkMask := '';
-
-
     end;
   end
   else inputError('Nesprávny vstup', 'Zlý vstup', $2030);
@@ -255,6 +263,183 @@ begin
   BR_Out.Text := SbroadcastAddress;
   NM_Out.Text := SNetworkMask;
 end;
+
+procedure TForm1.start_button_testClick(Sender: TObject);
+begin
+  if not (started) then
+  begin
+    if not TryStrToInt(tests_input_test.Text, assignments) then
+    begin
+      Application.MessageBox('Musíte zadať číslo', 'Chyba', $2030);
+      started := false;
+    end
+    else
+      begin
+      started := true;
+      randomize();
+      IPv4.TabVisible := false;
+      disableReset_button_test.Enabled := false;
+
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22)+8);  //TOTO ZMEN
+      assignment_address_test.Caption := input;
+
+
+
+      actualAssignemnt := 1;
+
+      TestFromAll_out_test.Caption := IntToStr(actualAssignemnt) + '/' + IntToStr(assignments);
+      score_out_test.Caption := IntToStr(correctAssignments) + '/' + IntToStr(assignments);
+
+    end;
+
+  end
+  else Application.MessageBox('Už ste začali, pokračujte v zadaní, alebo stlačte "reset"', 'Test beží', $0040);
+
+end;
+
+procedure resetElement(element:TEdit);
+begin
+  element.ReadOnly := false;
+  element.Color := clDefault;
+  element.Text := '';
+end;
+
+procedure TForm1.Reset_button_testClick(Sender: TObject);
+begin
+  if not (disabledReset) then
+  begin
+    disableReset_button_test.Enabled := true;
+    IPv4.TabVisible := true;
+    started := false;
+    input := '0.0.0.0/24';
+    assignment_address_test.Caption := input;
+    assignments := 0;
+    correctAssignments := 0;
+    actualAssignemnt := 0;
+    score_out_test.Caption := '0/0';
+    TestFromAll_out_test.Caption := '0/0';
+
+    resetElement(NM_input_test);
+    resetElement(NET_input_test);
+    resetElement(FA_input_test);
+    resetElement(LA_input_test);
+    resetElement(BR_input_test);
+  end;
+end;
+
+procedure compareAnswer(firstString:string; testedElement:TEdit);
+begin
+   if (CompareStr(firstString, testedElement.text) = 0) then
+  begin
+    thisIsCorrect := true;
+    testedElement.Color := $90EE90;
+    Inc(points);
+  end
+  else
+  begin
+    thisIsCorrect := false;
+    testedElement.Color := $9090ee;
+  end;
+  testedElement.ReadOnly := true;
+
+end;
+
+procedure check(nm,net,fa,la,br:TEdit; assignmentNet,score:TLabel);
+begin
+
+  calcIPv4(assignmentNet.Caption);
+
+  compareAnswer(SNetworkMask, nm);
+  compareAnswer(SnetAddress, net);
+  compareAnswer(SfirstAddress,  fa);
+  compareAnswer(SlastAddress, la);
+  compareAnswer(SbroadcastAddress, br);
+
+  if thisIsCorrect then
+  begin
+    Inc(correctAssignments);
+    score.Caption := IntToStr(correctAssignments) + '/' + IntToStr(assignments);
+  end
+end;
+
+procedure TForm1.Check_button_testClick(Sender: TObject);
+begin
+  if (started) AND not checked then
+  begin
+  checkedByButton := true;
+  checked := true;
+  check(NM_input_test, NET_input_test, FA_input_test, LA_input_test, BR_input_test, assignment_address_test, score_out_test);
+  end
+  else Application.MessageBox('Pre začatie testu, stlačte "Štart"', 'Test nie je aktívny', $0040);
+end;
+
+procedure TForm1.next_button_testClick(Sender: TObject);
+var
+  grade,percents:integer;
+begin
+  checked := false;
+  if (started) then
+  begin
+    if not (checkedByButton) then check(NM_input_test, NET_input_test, FA_input_test, LA_input_test, BR_input_test, assignment_address_test, score_out_test);
+    checkedByButton := false;
+
+    if (actualAssignemnt < assignments) then
+    begin
+      input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(24);  //TOTO ZMEN
+      assignment_address_test.Caption := input;
+      Inc(actualAssignemnt);
+      TestFromAll_out_test.Caption := IntToStr(actualAssignemnt) + '/' + IntToStr(assignments);
+
+      resetElement(NM_input_test);
+      resetElement(NET_input_test);
+      resetElement(FA_input_test);
+      resetElement(LA_input_test);
+      resetElement(BR_input_test);
+    end
+    else
+    begin
+      totalPoints := assignments * 5;
+      percents := round(points / totalPoints * 100);
+      if ((percents >= 0) AND (percents <= 29)) then grade := 5
+      else if ((percents >= 30) AND (percents <= 49)) then grade := 4
+      else if ((percents >= 50) AND (percents <= 74)) then grade := 3
+      else if ((percents >= 75) AND (percents <= 89)) then grade := 2
+      else if (percents >= 90) then grade := 1;
+
+      IPv4.TabVisible := true;
+      disableReset_button_test.Enabled := true;
+      Reset_button_test.Enabled := true;
+      disabledReset := false;
+
+      Application.MessageBox(PChar('Hotovo, toto bol posledný príklad :) ' + sLineBreak +
+      'Vaše skóre, body: ' + IntToStr(points) + '/' + IntToStr(totalPoints) + sLineBreak +
+      'Vaše skóre, percentá: ' +  IntToStr(percents) + '%' + sLineBreak +
+      'Známka: ' + IntToStr(grade)), 'Hotovo', $2040);
+    end;
+  end
+  else Application.MessageBox('Bre začatie testu, stlačte "Štart"', 'Test nie je aktívny', $0040);
+end;
+
+
+procedure TForm1.disableReset_button_testClick(Sender: TObject);
+begin
+  disabledReset := true;
+  disableReset_button_test.Enabled := false;
+  Reset_button_test.Enabled := false;
+end;
+
+procedure TForm1.TestFromAll_out_testClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.tests_input_testChange(Sender: TObject);
+begin
+
+end;
+
+
 
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -293,6 +478,19 @@ begin
 
 end;
 
+
+
+
+procedure TForm1.Score_text_testClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.SlovakClick(Sender: TObject);
+begin
+  Application.MessageBox('Táto funkcia je stále vo vývoji. ' + sLineBreak + 'Thias function is under development.', 'WIP');
+end;
+
 procedure TForm1.NM_testClick(Sender: TObject);
 begin
 
@@ -305,11 +503,14 @@ end;
 
 procedure TForm1.LightClick(Sender: TObject);
 begin
+  Application.MessageBox('Táto funkcia je stále vo vývoji. ' + sLineBreak + 'Thias function is under development.', 'WIP');
 end;
+
+
 
 procedure TForm1.VersionClick(Sender: TObject);
 begin
-  Application.MessageBox('Verzia 0.9', 'Verzia');
+  Application.MessageBox('Verzia Alpha-0.9', 'Verzia');
 end;
 
 procedure TForm1.HelpClick(Sender: TObject);
@@ -319,12 +520,18 @@ end;
 
 procedure TForm1.DarkClick(Sender: TObject);
 begin
-  //TForm1.PageControl.Color := clBlack;
+  Application.MessageBox('Táto funkcia je stále vo vývoji. ' + sLineBreak + 'Thias function is under development.', 'WIP');
 end;
+
 
 procedure TForm1.DisplayClick(Sender: TObject);
 begin
 
+end;
+
+procedure TForm1.EnglishClick(Sender: TObject);
+begin
+  Application.MessageBox('Táto funkcia je stále vo vývoji. ' + sLineBreak + 'Thias function is under development.', 'WIP');
 end;
 
 procedure TForm1.wip1Click(Sender: TObject);
@@ -337,6 +544,11 @@ begin
 
 end;
 
+procedure TForm1.help_button_testClick(Sender: TObject);
+begin
+  OpenURL('https://cloud.milpet.eu/s/IPv4_adresacia');
+end;
+
 procedure TForm1.NETClick(Sender: TObject);
 begin
 
@@ -347,7 +559,7 @@ begin
 
 end;
 
-procedure TForm1.MenuItem1Click(Sender: TObject);
+procedure TForm1.LanguageClick(Sender: TObject);
 begin
 
 end;
@@ -383,5 +595,8 @@ begin
 end;
 
 begin
+  disabledReset := false;
+
+
 end.
 
