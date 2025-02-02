@@ -268,26 +268,30 @@ procedure TForm1.start_button_testClick(Sender: TObject);
 begin
   if not (started) then
   begin
-    started := true;
-    randomize();
-    IPv4.TabVisible := false;
-    disableReset_button_test.Enabled := false;
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22)+8);  //TOTO ZMEN
-    assignment_address_test.Caption := input;
-
-
     if not TryStrToInt(tests_input_test.Text, assignments) then
     begin
       Application.MessageBox('Musíte zadať číslo', 'Chyba', $2030);
       started := false;
+    end
+    else
+      begin
+      started := true;
+      randomize();
+      IPv4.TabVisible := false;
+      disableReset_button_test.Enabled := false;
+
+      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22)+8);  //TOTO ZMEN
+      assignment_address_test.Caption := input;
+
+
+
+      actualAssignemnt := 1;
+
+      TestFromAll_out_test.Caption := IntToStr(actualAssignemnt) + '/' + IntToStr(assignments);
+      score_out_test.Caption := IntToStr(correctAssignments) + '/' + IntToStr(assignments);
+
     end;
-
-    actualAssignemnt := 1;
-
-    TestFromAll_out_test.Caption := IntToStr(actualAssignemnt) + '/' + IntToStr(assignments);
-    score_out_test.Caption := IntToStr(correctAssignments) + '/' + IntToStr(assignments);
 
   end
   else Application.MessageBox('Už ste začali, pokračujte v zadaní, alebo stlačte "reset"', 'Test beží', $0040);
