@@ -3,7 +3,9 @@ object Form1: TForm1
   Height = 514
   Top = 462
   Width = 395
-  BorderStyle = bsDialog
+  HorzScrollBar.Page = 85
+  VertScrollBar.Page = 510
+  AutoScroll = True
   Caption = 'IPv4 Kalkulačka'
   ClientHeight = 514
   ClientWidth = 395
@@ -1856,7 +1858,7 @@ object Form1: TForm1
           Left = 320
           Height = 17
           Top = 154
-          Width = 30
+          Width = 40
           Caption = '0/0'
           Font.Height = -13
           Font.Name = 'Sans'

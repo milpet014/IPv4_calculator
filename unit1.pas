@@ -231,15 +231,30 @@ begin
         lastAddress[3] := lastAddress[3] - 1;
       end;
 
-      for i := 0 to 4 do
+      SnetAddress := '';
+      SfirstAddress := '';
+      SlastAddress := '';
+      SbroadcastAddress := '';
+      SNetworkMask := '';
+
+      for i := 0 to  3 do
       begin
-        SnetAddress := IntToStr(netAddress[0]) + '.' + IntToStr(netAddress[1]) + '.' + IntToStr(netAddress[2]) + '.' + IntToStr(netAddress[3]);
-        SfirstAddress := IntToStr(firstAddress[0]) + '.' + IntToStr(firstAddress[1]) + '.' + IntToStr(firstAddress[2]) + '.' + IntToStr(firstAddress[3]);
-        SlastAddress := IntToStr(lastAddress[0]) + '.' + IntToStr(lastAddress[1]) + '.' + IntToStr(lastAddress[2]) + '.' + IntToStr(lastAddress[3]);
-        SbroadcastAddress := IntToStr(broadcastAddress[0]) + '.' + IntToStr(broadcastAddress[1]) + '.' + IntToStr(broadcastAddress[2]) + '.' + IntToStr(broadcastAddress[3]);
-        SNetworkMask := IntToStr(maskArray[0]) + '.' + IntToStr(maskArray[1]) + '.' + IntToStr(maskArray[2]) + '.' + IntToStr(maskArray[3]);
+        SnetAddress := SnetAddress + IntToStr(netAddress[i]);
+        SfirstAddress := SfirstAddress + IntToStr(firstAddress[i]);
+        SlastAddress := SlastAddress + IntToStr(lastAddress[i]);
+        SbroadcastAddress := SbroadcastAddress + IntToStr(broadcastAddress[i]);
+        SNetworkMask := SNetworkMask + IntToStr(maskArray[i]);
+        if (i < 3) then
+        begin
+          SnetAddress := SnetAddress + '.';
+          SfirstAddress := SfirstAddress + '.';
+          SlastAddress := SlastAddress + '.';
+          SbroadcastAddress := SbroadcastAddress + '.';
+          SNetworkMask := SNetworkMask + '.';
+        end;
       end;
     end
+
 
     else
     begin
@@ -264,24 +279,37 @@ begin
   NM_Out.Text := SNetworkMask;
 end;
 
+function randomIPv4():string;
+begin
+  randomIPv4 := IntToStr(Random(254) + 1) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22) + 8);
+end;
+
 procedure TForm1.start_button_testClick(Sender: TObject);
 begin
   if not (started) then
   begin
+    start_button_test.Enabled := false;
+    help_button_test.Enabled := false;
     if not TryStrToInt(tests_input_test.Text, assignments) then
     begin
       Application.MessageBox('Musíte zadať číslo', 'Chyba', $2030);
       started := false;
+      start_button_test.Enabled := true;
+    end
+    else if ((assignments < 1) OR (assignments > 100)) then
+    begin
+      Application.MessageBox('Číslo musí byť od 1 po 100', 'Chyba', $2030);
+      started := false;
+      start_button_test.Enabled := true;
     end
     else
       begin
       started := true;
-      randomize();
       IPv4.TabVisible := false;
       disableReset_button_test.Enabled := false;
 
-      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22)+8);  //TOTO ZMEN
+      randomize();
+      input := randomIPv4();
       assignment_address_test.Caption := input;
 
 
@@ -309,6 +337,8 @@ procedure TForm1.Reset_button_testClick(Sender: TObject);
 begin
   if not (disabledReset) then
   begin
+    start_button_test.Enabled := true;
+    help_button_test.Enabled := true;
     disableReset_button_test.Enabled := true;
     IPv4.TabVisible := true;
     started := false;
@@ -325,6 +355,8 @@ begin
     resetElement(FA_input_test);
     resetElement(LA_input_test);
     resetElement(BR_input_test);
+
+
   end;
 end;
 
@@ -386,7 +418,7 @@ begin
 
     if (actualAssignemnt < assignments) then
     begin
-      input := IntToStr(Random(255)) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(24);  //TOTO ZMEN
+      input := randomIPv4();
       assignment_address_test.Caption := input;
       Inc(actualAssignemnt);
       TestFromAll_out_test.Caption := IntToStr(actualAssignemnt) + '/' + IntToStr(assignments);
@@ -409,6 +441,7 @@ begin
 
       IPv4.TabVisible := true;
       disableReset_button_test.Enabled := true;
+      help_button_test.Enabled := true;
       Reset_button_test.Enabled := true;
       disabledReset := false;
 
@@ -510,7 +543,7 @@ end;
 
 procedure TForm1.VersionClick(Sender: TObject);
 begin
-  Application.MessageBox('Verzia Alpha-0.9', 'Verzia');
+  Application.MessageBox('Verzia Alpha-0.92', 'Verzia');
 end;
 
 procedure TForm1.HelpClick(Sender: TObject);
