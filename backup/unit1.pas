@@ -121,7 +121,7 @@ var
   Form1: TForm1;
   input:string;
   SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
-  assignments,actualAssignemnt,correctAssignments, points, totalPoints:integer;
+  assignments,actualAssignemnt,correctAssignments, points:integer;
   correctInput,onlyOneError,started,thisIsCorrect,checkedByButton,checked, disabledReset:boolean;
   i,j:byte;
 
@@ -347,6 +347,7 @@ begin
     assignments := 0;
     correctAssignments := 0;
     actualAssignemnt := 0;
+    points := 0;
     score_out_test.Caption := '0/0';
     TestFromAll_out_test.Caption := '0/0';
 
@@ -397,7 +398,7 @@ end;
 
 procedure TForm1.Check_button_testClick(Sender: TObject);
 begin
-  if (started) AND not checked then
+  if (started AND not checked) then
   begin
   checkedByButton := true;
   checked := true;
@@ -408,7 +409,7 @@ end;
 
 procedure TForm1.next_button_testClick(Sender: TObject);
 var
-  grade,percents:integer;
+  grade,percents, totalPoints:integer;
 begin
   checked := false;
   if (started) then
@@ -543,7 +544,7 @@ end;
 
 procedure TForm1.VersionClick(Sender: TObject);
 begin
-  Application.MessageBox('Verzia Alpha-0.9', 'Verzia');
+  Application.MessageBox('Verzia Alpha-0.92', 'Verzia');
 end;
 
 procedure TForm1.HelpClick(Sender: TObject);
@@ -629,7 +630,7 @@ end;
 
 begin
   disabledReset := false;
-
+  //checked := false;
 
 end.
 
