@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="C:\fpcupdeluxe\fpc\bin\x86_64-win64\fpc.exe" Date="1514304369"/>
-  <Params Value=" -MObjFPC -Scghi -O1 -gw3 -gl -WG -l -vewnhibq -FiZ:\IPv4_calculator\lib\x86_64-win64 -FuC:\fpcupdeluxe\lazarus\components\anchordocking\units\x86_64-win64\win32 -FuC:\fpcupdeluxe\lazarus\lcl\units\x86_64-win64\win32 -FuC:\fpcupdeluxe\lazarus\lcl\units\x86_64-win64 -FuC:\fpcupdeluxe\lazarus\components\freetype\lib\x86_64-win64 -FuC:\fpcupdeluxe\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\fpcupdeluxe\lazarus\packager\units\x86_64-win64 -FuZ:\IPv4_calculator\ -FUZ:\IPv4_calculator\lib\x86_64-win64\ -FEZ:\IPv4_calculator\ -oZ:\IPv4_calculator\ipv4_kalkulacka.exe -dLCL -dLCLwin32 ipv4_kalkulacka.lpr"/>
-</CONFIG>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<CONFIG>
-  <Compiler Value="/home/milpet/Apps/fpcupdeluxe/fpc/bin/x86_64-linux/fpc.sh" Date="1738689466"/>
-  <Params Value=" -MObjFPC -Scghi -Cg -O1 -gw3 -gl -l -vewnhibq -Fi/home/milpet/Development/IPv4_calculator/lib/x86_64-linux -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/components/anchordocking/units/x86_64-linux/gtk2 -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/lcl/units/x86_64-linux/gtk2 -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/lcl/units/x86_64-linux -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/components/freetype/lib/x86_64-linux -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/components/lazutils/lib/x86_64-linux -Fu/home/milpet/Apps/fpcupdeluxe/lazarus/packager/units/x86_64-linux -Fu/home/milpet/Development/IPv4_calculator/ -FU/home/milpet/Development/IPv4_calculator/lib/x86_64-linux/ -FE/home/milpet/Development/IPv4_calculator/ -o/home/milpet/Development/IPv4_calculator/ipv4_kalkulacka -dLCL -dLCLgtk2 ipv4_kalkulacka.lpr"/>
-</CONFIG>
