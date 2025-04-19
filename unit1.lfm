@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 462
   Width = 395
   HorzScrollBar.Page = 85
-  VertScrollBar.Page = 84
+  VertScrollBar.Page = 511
   AutoScroll = True
   Caption = 'IPv4 Kalkulačka'
   ClientHeight = 514
@@ -148,7 +148,6 @@ object Form1: TForm1
   }
   Menu = MainMenu1
   OnCreate = FormCreate
-  LCLVersion = '3.6.0.0'
   Visible = True
   object PageControl: TPageControl
     AnchorSideLeft.Control = Owner
@@ -161,15 +160,15 @@ object Form1: TForm1
     Height = 514
     Top = 0
     Width = 395
-    ActivePage = IPv4
+    ActivePage = Test
     Anchors = [akTop, akLeft, akRight, akBottom]
-    TabIndex = 0
+    TabIndex = 1
     TabOrder = 0
     OnChange = PageControlChange
     object IPv4: TTabSheet
       AutoSize = True
       Caption = 'IPv4 Adresácia'
-      ClientHeight = 480
+      ClientHeight = 483
       ClientWidth = 385
       OnContextPopup = IPv4ContextPopup
       object AnchorDockPanel1: TAnchorDockPanel
@@ -1402,7 +1401,7 @@ object Form1: TForm1
     object Test: TTabSheet
       AutoSize = True
       Caption = 'Test IPv4 adresácie'
-      ClientHeight = 480
+      ClientHeight = 483
       ClientWidth = 385
       object AnchorDockPanel2: TAnchorDockPanel
         Left = -7
@@ -1914,25 +1913,116 @@ object Form1: TForm1
     object FLSM: TTabSheet
       AutoSize = True
       Caption = 'FLSM'
-      ClientHeight = 480
+      ClientHeight = 483
       ClientWidth = 385
-      TabVisible = False
       object AnchorDockPanel3: TAnchorDockPanel
         Left = -7
-        Height = 430
+        Height = 480
         Top = 0
         Width = 400
         Anchors = [akTop]
         BevelOuter = bvNone
-        Caption = 'Work In Progress!'
+        ClientHeight = 480
+        ClientWidth = 400
         ParentBackground = False
         TabOrder = 0
+        OnClick = AnchorDockPanel3Click
+        object Label1: TLabel
+          Left = 72
+          Height = 76
+          Top = 24
+          Width = 267
+          Alignment = taCenter
+          Caption = 'FLSM - Fixed Length Subnet Mask '#10'rozdelí veľkú sieť na menšie,rovnako veľké, '#10'podsiete.Počet nových menších podsieti je '#10'vždy mocnina dvoch (2, 4, 8, 16, 32...)'
+        end
+        object Label2: TLabel
+          Left = 48
+          Height = 19
+          Top = 128
+          Width = 194
+          Caption = 'Počet nových podsietí (Max 64):'
+          OnClick = Label2Click
+        end
+        object Label3: TLabel
+          Left = 48
+          Height = 19
+          Top = 168
+          Width = 93
+          Caption = 'Sieťová adresa:'
+        end
+        object FLSM_AddressesAmount: TEdit
+          Left = 248
+          Height = 31
+          Top = 120
+          Width = 98
+          TabOrder = 0
+          Text = '4'
+          OnChange = FLSM_AddressesAmountChange
+        end
+        object FLSM_input: TEdit
+          Left = 144
+          Height = 31
+          Top = 160
+          Width = 122
+          TabOrder = 1
+          Text = '192.168.42.0/24'
+        end
+        object FLSM_OkButt: TBitBtn
+          Left = 271
+          Height = 31
+          Top = 160
+          Width = 75
+          Caption = 'OK'
+          Glyph.Data = {
+            BA030000424DBA0300000000000036000000280000000F0000000F0000000100
+            2000000000008403000064000000640000000000000000000000000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            0000000000000000000E00000031000000150000000000000000000000000000
+            0000000000000000000000000000000000000000000000000000000000000000
+            001525483392478B61D72A5339AF0000002C0000000000000000000000000000
+            00000000000000000000000000000000000000000000000000162E5C41B164C5
+            8BFE76E9A3FF65C98DFE376D4DCB0D1E153C0000000000000000000000000000
+            00000000000000000000000000000000001D2951389A64C58BFE78EBA5FF78EB
+            A5FF75E7A2FF63C48AFE376D4DCB0000002C0000000000000000000000000000
+            000000000000000000162951389A5FBC84F678EBA5FF78EBA5FF72E19EFF77EA
+            A4FF75E7A2FF65C98DFE2E5D40BB0000002C0000000000000000000000000000
+            00001D3C2AA561C087FE78EBA5FF74E4A0FE519F70EA13261A9443845DE070DC
+            9BFE76E9A3FF65C98DFE376C4DCB0D1E153C0000000000000000000000001D3C
+            298356AB77EF74E5A0FF63C288DC2447326B0000000C162C1F52468A61D770DC
+            9BFE75E7A2FF63C48AFE376C4DCB000000250000000000000000001000101F40
+            2C843C7753F228513865000000090000000000000006162C1F5243845DE077EA
+            A4FF75E7A2FF65C98DFE4C9669A5000000270000000000000000000000040000
+            002B00000000000000000000000000000000000000000000003843845DE06FDC
+            9BFE76E9A3FF65C98DFE376C4BCB0D1E153C0000000000000000000000000000
+            00000000000000000000000000000000000000000000162C1F52468A61D770DD
+            9BFE75E7A2FF5EBA83FE1C3A28B3000000000000000000000000000000000000
+            00000000000000000000000000000000000000000006162C1F5243845DE073E2
+            9EFF498E64E7162C1E5D00000000000000000000000000000000000000000000
+            0000000000000000000000000000000000000000000000000038254A35C00A14
+            0D4D000000020000000000000000000000000000000000000000000000000000
+            000000000000000000000000000000000000000000000000001C000000020000
+            0000000000000000000000000000000000000000000000000000000000000000
+            000000000000000000000000000000000000000000000000000000000000
+          }
+          OnClick = FLSM_OkButtClick
+          TabOrder = 2
+        end
+        object FLSMScrollBox1: TScrollBox
+          Left = 16
+          Height = 250
+          Top = 217
+          Width = 361
+          HorzScrollBar.Page = 1
+          VertScrollBar.Page = 1
+          TabOrder = 3
+        end
       end
     end
     object VLSM: TTabSheet
       AutoSize = True
       Caption = 'VLSM'
-      ClientHeight = 480
+      ClientHeight = 483
       ClientWidth = 385
       TabVisible = False
       object AnchorDockPanel4: TAnchorDockPanel

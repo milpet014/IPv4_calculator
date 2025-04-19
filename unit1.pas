@@ -17,8 +17,15 @@ type
     AnchorDockPanel2: TAnchorDockPanel;
     AnchorDockPanel3: TAnchorDockPanel;
     AnchorDockPanel4: TAnchorDockPanel;
+    FLSM_OkButt: TBitBtn;
     disableReset_button_test: TBitBtn;
+    FLSM_AddressesAmount: TEdit;
+    FLSM_input: TEdit;
     Image1: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label3: TLabel;
+    FLSMScrollBox1: TScrollBox;
     start_button_test: TBitBtn;
     next_button_test: TBitBtn;
     TestFromAll_out_test: TStaticText;
@@ -32,7 +39,7 @@ type
     Reset_button_test: TBitBtn;
     calc1: TBitBtn;
     Check_button_test: TBitBtn;
-    BR: TStaticText;
+    //BR: TStaticText;
     BR_Out: TEdit;
     LA_input_test: TEdit;
     BR_input_test: TEdit;
@@ -52,40 +59,44 @@ type
     English: TMenuItem;
     NM_Out: TEdit;
     instructions0: TLabel;
-    FA: TStaticText;
+    //FA: TStaticText;
     FA_Out: TEdit;
     input1: TEdit;
-    LA: TStaticText;
+    //LA: TStaticText;
     MainMenu1: TMainMenu;
     Display: TMenuItem;
     About: TMenuItem;
     Mode: TMenuItem;
     Light: TMenuItem;
     Dark: TMenuItem;
-    NM: TStaticText;
+    //NM: TStaticText;
     Test: TTabSheet;
     Version: TMenuItem;
     Help: TMenuItem;
     LA_Out: TEdit;
-    NET: TStaticText;
+    //NET: TStaticText;
     NET_Out: TEdit;
     PageControl: TPageControl;
     IPv4: TTabSheet;
     FLSM: TTabSheet;
     VLSM: TTabSheet;
+    procedure AnchorDockPanel3Click(Sender: TObject);
     procedure calc1Click(Sender: TObject);
     procedure Check_button_testClick(Sender: TObject);
     procedure DarkClick(Sender: TObject);
     procedure disableReset_button_testClick(Sender: TObject);
     procedure DisplayClick(Sender: TObject);
+    procedure FLSM_AddressesAmountChange(Sender: TObject);
     procedure EnglishClick(Sender: TObject);
     procedure FA_OutChange(Sender: TObject);
+    procedure FLSM_OkButtClick(Sender: TObject);
     procedure help_button_testClick(Sender: TObject);
     procedure instructions0Click(Sender: TObject);
     procedure GroupBox1Click(Sender: TObject);
     procedure HelpClick(Sender: TObject);
     procedure IPv4ContextPopup(Sender: TObject; MousePos: TPoint;
       var Handled: Boolean);
+    procedure Label2Click(Sender: TObject);
     procedure next_button_testClick(Sender: TObject);
     procedure Reset_button_testClick(Sender: TObject);
     procedure Score_text_testClick(Sender: TObject);
@@ -111,17 +122,31 @@ type
     procedure BRClick(Sender: TObject);
     procedure NMClick(Sender: TObject);
     procedure instructions0_testClick(Sender: TObject);
+    //procedure GenerateFLSMOutputs(count: integer; output: string);
+    procedure ClearOldFLSMOutputs();
+    procedure FormDestroy(Sender: TObject);
+    procedure FLSMCalculation(FLSMInputAddress:string; amount:integer);
   private
+    FLSMComponents: TList; //lit generovanych komponentov pre FLSM
 
   public
+    //procedure GenerateFLSMOutputs(count: integer; output: string);
+    //procedure ClearOldFLSMEdits();
+    procedure calcIPv4(inputFunction:string);
+    procedure resetElement(element:TEdit);
+    procedure compareAnswer(firstString:string; testedElement:TEdit);
+    procedure check(nm,net,fa,la,br:TEdit; assignmentNet,score:TLabel);
+    procedure AddresationOnClick(Sender: TObject);
+
+    function randomIPv4():string;
 
   end;
 
 var
   Form1: TForm1;
   input:string;
-  SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
-  assignments,actualAssignemnt,correctAssignments, points:integer;
+  NetAddressBin,SnetAddressComplet,SnetAddress,SfirstAddress,SlastAddress,SbroadcastAddress,SNetworkMask:string;
+  assignments,actualAssignemnt,correctAssignments, points, hosts:integer;
   correctInput,onlyOneError,started,thisIsCorrect,checkedByButton,checked, disabledReset:boolean;
   i,j:byte;
 
@@ -132,18 +157,81 @@ implementation
 
 { TForm1 }
 
-procedure inputError(text,title:PChar; code:integer);
+procedure inputError(textOutput,title:PChar; code:integer);
 begin
   if (onlyOneError) then
   begin
     onlyOneError := false;
-    Application.MessageBox(text, title, code);
+    Application.MessageBox(textOutput, title, code);
     input := '0.0.0.0/24';
     correctInput := false;
   end;
 end;
 
-procedure calcIPv4(inputFunction:string);
+//#############################################################
+
+(*function addressToBinary(address:string):string;
+var
+  SaddressArray:TStringArray;
+  addressArray:array[0..3] of integer;
+  i:byte;
+  binAddressArr:array[0..3] of string;
+  binAddress:string;
+  x:integer;
+
+begin
+  SaddressArray := address.Split('.');
+  binAddress := '';
+
+  for i := 0 to 3 do
+  begin
+     addressArray[i] := StrToInt(SaddressArray[i]);
+     binAddressArr[i] := '';
+
+     while addressArray[i] > 0 do
+     begin;
+        x := addressArray[i] mod 2;
+        binAddressArr[i] := Concat(IntToStr(x), binAddressArr[i]);
+        addressArray[i] := addressArray[i] div 2;
+     end;
+     while Length(binAddressArr[i]) < 8 do
+     begin
+        binAddressArr[i] := '0' + binAddressArr[i];
+     end;
+     binAddress := Concat(binAddress, binAddressArr[i]);
+  end;
+
+  Result := binAddress;
+
+end;     *)
+
+function addressToCardinal(inputAddress:string):UInt32;
+var
+  SaddressArray:TStringArray;
+  addressArray:array[0..3] of integer;
+  i: byte;
+  ip:UInt32;
+begin
+  SaddressArray := inputAddress.Split('.');
+
+  for i := 0 to 3 do addressArray[i] := StrToInt(SaddressArray[i]);
+  ip := (addressArray[0] shl 24) or (addressArray[1] shl 16) or (addressArray[2] shl 8) or addressArray[3];
+  result := ip;
+end;
+
+function cardinalToAddress(inputNum:UInt32):string;
+var
+  o0,o1,o2,o3:byte;
+begin
+  o0 := (inputNum shr 24) and 255;
+  o1 := (inputNum shr 16) and 255;
+  o2 := (inputNum shr 8) and 255;
+  o3 := inputNum and 255;
+
+  result := IntToStr(o0) + '.' + IntToStr(o1) + '.' + IntToStr(o2) + '.' + IntToStr(o3);
+end;
+
+procedure TForm1.calcIPv4(inputFunction:string);
 var
   inputAddress,inputPrefix:TStringArray;
   prefix:integer;
@@ -236,6 +324,7 @@ begin
       SlastAddress := '';
       SbroadcastAddress := '';
       SNetworkMask := '';
+      SnetAddressComplet := '0.0.0.0/0';
 
       for i := 0 to  3 do
       begin
@@ -253,6 +342,7 @@ begin
           SNetworkMask := SNetworkMask + '.';
         end;
       end;
+      SnetAddressComplet := SnetAddress + '/' + IntToStr(prefix);
     end
 
 
@@ -263,6 +353,7 @@ begin
       SlastAddress := '';
       SbroadcastAddress := '';
       SNetworkMask := '';
+      SnetAddressComplet := '0.0.0.0/0';
     end;
   end
   else inputError('Nesprávny vstup', 'Zlý vstup', $2030);
@@ -279,7 +370,12 @@ begin
   NM_Out.Text := SNetworkMask;
 end;
 
-function randomIPv4():string;
+procedure TForm1.AnchorDockPanel3Click(Sender: TObject);
+begin
+
+end;
+
+function TForm1.randomIPv4():string;
 begin
   randomIPv4 := IntToStr(Random(254) + 1) + '.' + IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '.' +IntToStr(Random(255)) + '/' + IntToStr(Random(22) + 8);
 end;
@@ -306,6 +402,7 @@ begin
       begin
       started := true;
       IPv4.TabVisible := false;
+      FLSM.TabVisible := false;
       disableReset_button_test.Enabled := false;
 
       randomize();
@@ -326,7 +423,7 @@ begin
 
 end;
 
-procedure resetElement(element:TEdit);
+procedure TForm1.resetElement(element:TEdit);
 begin
   element.ReadOnly := false;
   element.Color := clDefault;
@@ -341,6 +438,7 @@ begin
     help_button_test.Enabled := true;
     disableReset_button_test.Enabled := true;
     IPv4.TabVisible := true;
+    FLSM.TabVisible := true;
     started := false;
     input := '0.0.0.0/24';
     assignment_address_test.Caption := input;
@@ -361,7 +459,7 @@ begin
   end;
 end;
 
-procedure compareAnswer(firstString:string; testedElement:TEdit);
+procedure TForm1.compareAnswer(firstString:string; testedElement:TEdit);
 begin
    if (CompareStr(firstString, testedElement.text) = 0) then
   begin
@@ -378,7 +476,7 @@ begin
 
 end;
 
-procedure check(nm,net,fa,la,br:TEdit; assignmentNet,score:TLabel);
+procedure TForm1.check(nm,net,fa,la,br:TEdit; assignmentNet,score:TLabel);
 begin
 
   calcIPv4(assignmentNet.Caption);
@@ -441,6 +539,7 @@ begin
       else if (percents >= 90) then grade := 1;
 
       IPv4.TabVisible := true;
+      FLSM.TabVisible := true;
       disableReset_button_test.Enabled := true;
       help_button_test.Enabled := true;
       Reset_button_test.Enabled := true;
@@ -452,7 +551,7 @@ begin
       'Známka: ' + IntToStr(grade)), 'Hotovo', $2040);
     end;
   end
-  else Application.MessageBox('Bre začatie testu, stlačte "Štart"', 'Test nie je aktívny', $0040);
+  else Application.MessageBox('Pre začatie testu, stlačte "Štart"', 'Test nie je aktívny', $0040);
 end;
 
 
@@ -462,6 +561,177 @@ begin
   disableReset_button_test.Enabled := false;
   Reset_button_test.Enabled := false;
 end;
+
+//################################################### FLSM ###########################################
+
+procedure TForm1.ClearOldFLSMOutputs();
+var
+  i:integer;
+begin
+  for i := FLSMComponents.Count - 1 downto 0 do TObject(FLSMComponents[i]).Free;
+
+  FLSMComponents.Clear; // vymaze zoznam FLSM
+end;
+
+procedure TForm1.AddresationOnClick(Sender: TObject);
+var
+  btn: TBitBtn;
+  i:integer;
+  editOut:TEdit;
+begin
+  btn := TBitBtn(Sender);
+
+  for i := 0 to FLSMComponents.Count - 1 do
+  begin
+    if TObject(FLSMComponents[i]) is TEdit then
+    begin
+      editOut := TEdit(FLSMComponents[i]);
+      if editOut.Tag = btn.Tag then
+      begin
+        calcIPv4(editOut.Text);
+
+        if hosts > 2 then
+        begin
+          Application.MessageBox(PChar('Sieťova adresa: ' + SnetAddress + sLineBreak +
+          'Prvá adresa: ' + SfirstAddress + sLineBreak +
+          'Posledná adresa: ' + SlastAddress + sLineBreak +
+          'Broadcast adresa: ' + SbroadcastAddress + sLineBreak +
+          'Sieťová maska: ' + SNetworkMask + sLineBreak +
+          'Počet klientov: ' + IntToStr(hosts - 2)), 'Adresácia', $2040);
+        end
+        else
+        begin
+           Application.MessageBox(PChar('Sieťova adresa: ' + SnetAddress + sLineBreak +
+          'Prvá adresa: ' + SfirstAddress + sLineBreak +
+          'Posledná adresa: ' + SlastAddress + sLineBreak +
+          'Broadcast adresa: ' + SbroadcastAddress + sLineBreak +
+          'Sieťová maska: ' + SNetworkMask + sLineBreak +
+          'Počet klientov: ' + '0'), 'Adresácia', $2040);
+        end;
+      end;
+    end;
+  end;
+end;
+
+(*procedure TForm1.GenerateFLSMOutputs(count:integer; output:string);
+var
+  i:integer;
+  newTEdit:TEdit;
+  newTButton:TBitBtn;
+begin
+  ClearOldFLSMOutputs();
+
+  for i:= 0 to count - 1 do
+  begin
+    newTEdit := TEdit.Create(self);
+    newTEdit.Parent := FLSMScrollBox1;
+    newTEdit.Left := 10;
+    newTEdit.Top := 10 + 33 * i;
+    newTEdit.Width := 200;
+    newTEdit.Text := output;
+    newTEdit.Tag := i;
+    FLSMComponents.Add(newTEdit);
+
+    newTButton := TBitBtn.Create(self);
+    newTButton.Parent := FLSMScrollBox1;
+    newTButton.Left := 220;
+    newTButton.Top := 10 + 33 * i;
+    newTButton.Width := 110;
+    newTButton.Caption := 'Adresácia';
+    newTButton.Tag := i;
+    newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
+
+    newTButton.OnClick := @AddresationOnClick;
+
+    FLSMComponents.Add(newTButton);
+  end;
+end; *)
+
+Procedure TForm1.FLSMCalculation(FLSMInputAddress:string; amount:integer);
+var
+  inputPrefix:TStringArray;
+  prefix,powerNet,i:integer;
+
+  newTEdit:TEdit;
+  newTButton:TBitBtn;
+  actualNetworkCardinal,decimalAddressCardinal:UInt32;
+
+begin
+  onlyOneError := true;
+  SnetAddressComplet := '0.0.0.0/0';
+
+
+  calcIPv4(FLSMInputAddress);
+
+  if SnetAddressComplet = '0.0.0.0/0' then exit;
+
+  inputPrefix := SnetAddressComplet.Split('/');
+  prefix := StrToInt(inputPrefix[1]);
+
+  decimalAddressCardinal := addressToCardinal(SnetAddress);
+
+
+
+  powerNet := 1;
+  while powerNet < amount do powerNet := powerNet * 2;
+
+  prefix := prefix + Round(ln(powerNet) / ln(2));
+
+  hosts :=  round(Power(2,(32 - prefix)));
+
+  if prefix > 32 then
+  begin
+    inputError('Zadané podsieťovanie nie je možné', 'Chyba, zlý vstup', &2030);
+    abort;
+  end;
+
+  ClearOldFLSMOutputs();
+  for i:= 0 to powerNet - 1 do
+  begin
+
+    actualNetworkCardinal := decimalAddressCardinal + (i * hosts);
+
+
+
+    newTEdit := TEdit.Create(self);
+    newTEdit.Parent := FLSMScrollBox1;
+    newTEdit.Left := 10;
+    newTEdit.Top := 10 + 33 * i;
+    newTEdit.Width := 200;
+    newTEdit.Text :=  cardinalToAddress(actualNetworkCardinal) + '/' + IntToStr(prefix);
+    newTEdit.Tag := i;
+    FLSMComponents.Add(newTEdit);
+
+    newTButton := TBitBtn.Create(self);
+    newTButton.Parent := FLSMScrollBox1;
+    newTButton.Left := 220;
+    newTButton.Top := 10 + 33 * i;
+    newTButton.Width := 110;
+    newTButton.Caption := 'Adresácia';
+    newTButton.Tag := i;
+    newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
+
+    newTButton.OnClick := @AddresationOnClick;
+
+    FLSMComponents.Add(newTButton);
+  end;
+
+end;
+
+procedure TForm1.FLSM_OkButtClick(Sender: TObject);
+var
+  count:integer;
+begin
+
+  if not TryStrToInt(FLSM_AddressesAmount.Text, count) then Application.MessageBox('Musíte zadať číslo', 'Chyba', $2030)
+  else if ((count < 1) OR (count > 64)) then Application.MessageBox('Číslo musí byť od 1 po 64', 'Chyba', $2030)
+  else
+    begin
+      FLSMCalculation(FLSM_input.Text, count);
+    end;
+
+end;
+
 
 procedure TForm1.TestFromAll_out_testClick(Sender: TObject);
 begin
@@ -478,7 +748,13 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  FLSMComponents := TList.Create; //vytvorenie listu pre FLSM
+end;
 
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  ClearOldFLSMOutputs();  // odstráni TEdit a TBitBtn
+  FLSMComponents.Free; // uvoľní zoznam
 end;
 
 procedure TForm1.LAClick(Sender: TObject);
@@ -508,6 +784,11 @@ end;
 
 procedure TForm1.IPv4ContextPopup(Sender: TObject; MousePos: TPoint;
   var Handled: Boolean);
+begin
+
+end;
+
+procedure TForm1.Label2Click(Sender: TObject);
 begin
 
 end;
@@ -544,7 +825,7 @@ end;
 
 procedure TForm1.VersionClick(Sender: TObject);
 begin
-  Application.MessageBox('Verzia Alpha-0.93', 'Verzia');
+  Application.MessageBox('Verzia Beta-0.1', 'Verzia');
 end;
 
 procedure TForm1.HelpClick(Sender: TObject);
@@ -563,6 +844,11 @@ begin
 
 end;
 
+procedure TForm1.FLSM_AddressesAmountChange(Sender: TObject);
+begin
+
+end;
+
 procedure TForm1.EnglishClick(Sender: TObject);
 begin
   Application.MessageBox('Táto funkcia je stále vo vývoji. ' + sLineBreak + 'Thias function is under development.', 'WIP');
@@ -577,6 +863,8 @@ procedure TForm1.FA_OutChange(Sender: TObject);
 begin
 
 end;
+
+
 
 procedure TForm1.help_button_testClick(Sender: TObject);
 begin
