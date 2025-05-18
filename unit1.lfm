@@ -4,7 +4,7 @@ object Form1: TForm1
   Top = 462
   Width = 425
   HorzScrollBar.Page = 85
-  VertScrollBar.Page = 527
+  VertScrollBar.Page = 84
   AutoScroll = True
   Caption = 'IPv4 Kalkulačka'
   ClientHeight = 530
@@ -148,6 +148,7 @@ object Form1: TForm1
   }
   Menu = MainMenu1
   OnCreate = FormCreate
+  LCLVersion = '3.6.0.0'
   Visible = True
   object PageControl: TPageControl
     AnchorSideLeft.Control = Owner
@@ -168,7 +169,7 @@ object Form1: TForm1
     object IPv4: TTabSheet
       AutoSize = True
       Caption = 'IPv4 Adresácia'
-      ClientHeight = 499
+      ClientHeight = 496
       ClientWidth = 415
       OnContextPopup = IPv4ContextPopup
       object AnchorDockPanel1: TAnchorDockPanel
@@ -1401,7 +1402,7 @@ object Form1: TForm1
     object Test: TTabSheet
       AutoSize = True
       Caption = 'Test IPv4 adresácie'
-      ClientHeight = 499
+      ClientHeight = 496
       ClientWidth = 415
       object AnchorDockPanel2: TAnchorDockPanel
         Left = 8
@@ -1913,7 +1914,7 @@ object Form1: TForm1
     object FLSM: TTabSheet
       AutoSize = True
       Caption = 'FLSM'
-      ClientHeight = 499
+      ClientHeight = 496
       ClientWidth = 415
       object AnchorDockPanel3: TAnchorDockPanel
         Left = 8
@@ -2072,7 +2073,7 @@ object Form1: TForm1
     object VLSM: TTabSheet
       AutoSize = True
       Caption = 'VLSM'
-      ClientHeight = 499
+      ClientHeight = 496
       ClientWidth = 415
       object AnchorDockPanel4: TAnchorDockPanel
         Left = -1

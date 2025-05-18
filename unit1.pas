@@ -792,7 +792,7 @@ var
 begin
   for i := VLSMInputComponents.Count - 1 downto 0 do TObject(VLSMInputComponents[i]).Free;
 
-  VLSMInputComponents.Clear; // vymaze zoznam FLSM
+  VLSMInputComponents.Clear; // vymaze zoznam VLSM
 end;
 
 procedure TForm1.ClearOldVLSMOutputs();
@@ -801,7 +801,7 @@ var
 begin
   for i := VLSMOutputComponents.Count - 1 downto 0 do TObject(VLSMOutputComponents[i]).Free;
 
-  VLSMOutputComponents.Clear; // vymaze zoznam FLSM
+  VLSMOutputComponents.Clear; // vymaze zoznam VLSM
 end;
 
 procedure TForm1.GenerateVLSMInputs(count:integer);
@@ -973,6 +973,7 @@ begin
     newTButton.Caption := 'IP';
     newTButton.Tag := i;
     newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
+    VLSMOutputComponents.Add(newTButton);
     newTButton.OnClick := @AddresationOnClick;
   end;
 end;
