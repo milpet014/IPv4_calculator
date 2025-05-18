@@ -1079,7 +1079,7 @@ begin
   writeln(exportFile, '');
   writeln(exportFile, 'https://github.com/milpet014/IPv4_calculator');
   CloseFile(exportFile);
-  Application.MessageBox('Podsiete boli úspešne expertované', 'Export', $2040);
+  Application.MessageBox('Podsiete boli úspešne exportované', 'Export', $2040);
 end;
 
 
