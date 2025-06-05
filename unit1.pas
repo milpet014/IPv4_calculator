@@ -761,7 +761,7 @@ begin
     newTButton.Width := 110;
     newTButton.Caption := 'Adresácia';
     newTButton.Tag := i;
-    newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
+    //newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
 
     newTButton.OnClick := @AddresationOnClick;
 
@@ -972,7 +972,7 @@ begin
     newTButton.Width := 50;
     newTButton.Caption := 'IP';
     newTButton.Tag := i;
-    newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
+    //newTButton.Glyph.LoadFromFile('icons/ip_addressation-small.bmp');
     VLSMOutputComponents.Add(newTButton);
     newTButton.OnClick := @AddresationOnClick;
   end;
